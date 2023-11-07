@@ -4,8 +4,8 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
   final List<StudioItem> items = [
-    StudioItem("Lihat Produk", Icons.checklist, Colors.purple.shade900),
-    StudioItem("Tambah Produk", Icons.add_shopping_cart, Colors.blue.shade900),
+    StudioItem("Lihat Item", Icons.checklist, Colors.purple.shade900),
+    StudioItem("Tambah Item", Icons.add_circle, Colors.blue.shade900),
     StudioItem("Logout", Icons.logout, Colors.pinkAccent.shade700),
   ];
 
