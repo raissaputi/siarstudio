@@ -13,12 +13,11 @@ class LeftDrawer extends StatelessWidget {
           const DrawerHeader(
             decoration: BoxDecoration(
               color: Color.fromRGBO(74, 20, 140, 1),
-              // color: Colors.purple.shade900,
             ),
             child: Column(
               children: [
                 Text(
-                  'SiarStuido',
+                  'SiarStudio',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -26,7 +25,7 @@ class LeftDrawer extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                Padding(padding: EdgeInsets.all(10)),
+                Padding(padding: EdgeInsets.all(16)),
                 Text("Keep track of your Studio here!",
                   textAlign: TextAlign.left,
                   style: TextStyle(

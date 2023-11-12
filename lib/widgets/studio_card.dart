@@ -26,7 +26,6 @@ class StudioCard extends StatelessWidget {
             ..showSnackBar(SnackBar(
               content: Text("Kamu telah menekan tombol ${item.name}!")));
 
-          // Navigate ke route yang sesuai (tergantung jenis tombol)
           if (item.name == "Tambah Item") {
             Navigator.push(
               context,
@@ -37,7 +36,6 @@ class StudioCard extends StatelessWidget {
           }
         },
         child: Container(
-          // Container untuk menyimpan Icon dan Text
           padding: const EdgeInsets.all(8),
           child: Center(
             child: Column(
