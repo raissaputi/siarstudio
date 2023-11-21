@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:siarstudio/screens/list_item.dart';
 import 'package:siarstudio/screens/menu.dart';
 import 'package:siarstudio/screens/studio_form.dart';
 
@@ -60,6 +61,17 @@ class LeftDrawer extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => const StudioFormPage(),
                 )
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.list_alt),
+            title: const Text('Daftar Item'),
+            onTap: () {
+              // Route menu ke halaman item
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ItemPage()),
               );
             },
           ),
