@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:siarstudio/models/item.dart';
+import 'package:siarstudio/screens/detail_item.dart';
 import 'package:siarstudio/widgets/left_drawer.dart';
 
 class ItemPage extends StatefulWidget {
@@ -37,7 +38,14 @@ Future<List<Item>> fetchItem() async {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: const Text('Item'),
+      title: const Text(
+        'Your Item',
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.purple.shade900,
     ),
     drawer: const LeftDrawer(),
     body: FutureBuilder(
@@ -58,31 +66,39 @@ Widget build(BuildContext context) {
               ],
             );
           } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (_, index) => Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 12),
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${snapshot.data![index].fields.name}",
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) => InkWell(
+                  onTap: () {
+                    // Navigasi ke halaman detail dengan data yang sesuai
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailItem(item : snapshot.data![index]),
                       ),
-                      const SizedBox(height: 10),
-                      Text("${snapshot.data![index].fields.amount}"),
-                      const SizedBox(height: 10),
-                      Text(
-                        "${snapshot.data![index].fields.description}")
-                    ],
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${snapshot.data![index].fields.name}",
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text("${snapshot.data![index].fields.amount}"),
+                      ],
+                    ),
                   ),
-                )
+                ),
               );
             }
           }
