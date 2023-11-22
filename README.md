@@ -213,6 +213,9 @@ Untuk menampilkan card, saya buat halaman utama dengan menambahkan kode berikut
     ```
 </details>
 
+<details>
+<summary>Tugas 8</summary>
+
 ## Tugas 8
 
 ### Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
@@ -451,3 +454,138 @@ ListTile(
   },
 ),
 ```
+</details>
+
+
+## Tugas 9
+
+### Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+
+🔹 Ya, data JSON dapat diambil membuat model terlebih dahulu, yaitu dengan membuat dynamic map dari JSON dan mengakses nilainya seperti dictionary. Namun, hal tersebut bukan penggunaan yg baik karena kegunaan model itu untuk membuat representasi objek dari suatu data JSON sehingga penyimpanan data lebih rapi dan aman.
+
+### Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+
+CookieRequest adalah kelas yang digunakan untuk mengirim permintaan HTTP dengan cookie. Dalam aplikasi Flutter, CookieRequest digunakan untuk mengirim permintaan HTTP dengan cookie ke server. Dalam beberapa kasus, seperti saat menggunakan autentikasi berbasis cookie, CookieRequest sangat berguna. CookieRequest dibagikan ke semua komponen di aplikasi flutter supaya status login konosisten di setiap halaman.
+
+### Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+
+Untuk mengambil data dari JSON dan menampilkannya pada Flutter, dilalui beberapa langkah berikut:
+
+1. Mengirim permintaan HTTP ke server menggunakan `http.get()` dengan URL yang sesuai.
+
+2. Mendapatkan respons dari server dalam bentuk JSON.
+
+3. Melakukan decode respons menjadi bentuk JSON menggunakan `jsonDecode()`.
+
+4. Melakukan konversi data JSON menjadi objek yang sesuai.
+
+5. Menampilkan data yang diambil pada aplikasi Flutter.
+
+```
+Future<List<Item>> fetchItem() async {
+  var url = Uri.parse(
+    'https://puti-raissa-tugas.pbp.cs.ui.ac.id/json/');
+  var response = await http.get(
+    url,
+    headers: {"Content-Type": "application/json"},
+  );
+
+  // melakukan decode response menjadi bentuk json
+  var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+  // melakukan konversi data json menjadi object Item
+  List<Item> list_item = [];
+  for (var d in data) {
+    if (d != null) {
+      list_item.add(Item.fromJson(d));
+    }
+  }
+  return list_item;
+}
+```
+
+Fungsi `fetchItem()` melakukan hal-hal tersebut. Pertama, mengirim permintaan HTTP ke server menggunakan URL yang sesuai. Kemudian, didapatkan respons dari server dalam bentuk JSON. Setelah itu, dilakukan decode respons menjadi bentuk JSON menggunakan `jsonDecode()`. Selanjutnya, dilakukan konversi data JSON menjadi objek `Item` menggunakan `Item.fromJson()`. Akhirnya, direturn list objek `Item` yang telah diambil dari server.
+
+### Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
+__1. Input Akun di Flutter:__
+
+Pengguna memasukkan username dan password.
+
+```
+String username = _usernameController.text;
+String password = _passwordController.text;
+```
+__2. Permintaan Autentikasi ke Django:__
+
+Flutter mengirim permintaan autentikasi ke Django.
+
+```
+final response = await request.login("https://puti-raissa-tugas.pbp.cs.ui.ac.id/auth/login/", {
+  'username': username,
+  'password': password,
+});
+```
+__3. Autentikasi oleh Django:__
+
+Django memeriksa kredensial dan memberikan respons berhasil atau gagal.
+
+```
+def login_view(request):
+    user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+    return JsonResponse({'message': 'Login berhasil', 'username': user.username} if user else {'message': 'Login gagal'})
+```
+
+__4. Navigasi dan Tampilan Menu di Flutter:__
+
+Jika berhasil, Flutter navigasi ke halaman beranda dan menampilkan pesan selamat datang.
+
+```
+if (request.loggedIn) {
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$message Selamat datang, $uname.")));
+} else {
+  // Tampilkan dialog jika login gagal
+  showDialog(/*...*/);
+``````
+
+### Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+
+Di luar widget yang dipakai pada tugas sebelumnya saya memakai:
+
+1. __`BuildContext`__: Handle ke lokasi widget dalam pohon widget.
+
+2. __`Provider`__: Widget untuk mengelola state.
+
+3. __`CookieRequest`__: Kelas kustom untuk membuat permintaan HTTP dengan cookie.
+
+4. __`TextEditingController`__: Pengontrol untuk bidang teks yang dapat diedit.
+
+5. __`MaterialPageRoute`__: Rute halaman modal yang menggantikan seluruh layar dengan halaman baru.
+
+6. __`ScaffoldMessenger`__: Pesan untuk menampilkan snack bar.
+
+7. __`AlertDialog`__: Dialog dengan judul, konten, dan tindakan.
+
+8. __`TextButton`__: Tombol teks yang digunakan dalam tindakan `AlertDialog`.
+
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)
+
+🔹 Menambahkan dependensi yang diperlukan dalam proyek Flutter (provider, pbp_django_auth, http)
+
+🔹 Menyediakan library CookieRequest ke semua widget anak menggunakan Provider pada file menu.dart
+
+1. Buat file login.dart di direktori screens.
+2. Implementasikan tampilan formulir login sesuai kebutuhan.
+3. Mengarahkan ke main.dart
+
+🔹 Buat file list_item.dart di direktori screens. File ini bertanggung jawab untuk menampilkan list semua Item yang diambil dari server.
+
+🔹 Modifikasi file studio_form.dart di direktori screens agar dapat mengubah input menjadi format JSON dan mengirimkannya ke server.
+
+🔹 Buat file detail_item.dart di direktori screens. File ini akan menampilkan semua informasi Item dengan detail.
+
+🔹 Modifikasi menu.dart di direktori screens agar tombol logout dapat membuat pengguna keluar dari aplikasi dan kembali ke halaman login.gunakan Provider untuk mengelola status login.
+
+🔹 Semua perubahan ini membentuk struktur dasar aplikasi Flutter yang mencakup halaman login, tampilan daftar item, formulir item, dan tampilan detail item, serta kemampuan untuk logout.
